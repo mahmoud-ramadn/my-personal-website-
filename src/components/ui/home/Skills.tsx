@@ -32,6 +32,8 @@ import { TbDatabaseSearch } from "react-icons/tb"
 
 import LogoLoop from "@/components/LogoLoop"
 
+import UITitle from "../ui-title"
+
 // Custom TanStack icons components
 const TanStackTableIcon = () => (
   <div className="relative">
@@ -120,16 +122,8 @@ const techLogos = [
 
 export default function Skills() {
   return (
-    <div style={{ position: "relative", overflow: "hidden" }} className="my-40">
-      <h2 className="text-5xl md:text-7xl font-bold my-20">
-        <span className="bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent">
-          Skills &
-        </span>
-        <br />
-        <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-          Expertise
-        </span>
-      </h2>
+    <div  className=" container my-40">
+      <UITitle title="skills" href=" expertise" />
 
       <LogoLoop
         logos={techLogos}
