@@ -1,4 +1,5 @@
 import alsmasy from "@/assets/images/project/almasy.png";
+import damain from "@/assets/images/project/daman.png";
 import Diatatan from "@/assets/images/project/diataftan.png";
 import furion from "@/assets/images/project/furion.png";
 import petCar from "@/assets/images/project/pet-care.png";
@@ -71,6 +72,12 @@ const projectImages = [
     alt: "Dashboard Analytics",
     website: "https://vue-todolist-beryl.vercel.app/",
     sourceCode: "https://github.com/mahmoud-ramadn/vueTodolist",
+  },
+  {
+    src: damain,
+    alt: "Dashboard Analytics",
+    website: "https://dhameen.sa/",
+    sourceCode: "https://github.com/mahmoud-ramadn/",
   },
 ]
 
