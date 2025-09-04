@@ -122,7 +122,7 @@ const techLogos = [
 
 export default function Skills() {
   return (
-    <div  className=" container my-40">
+    <div  className=" container my-20">
       <UITitle title="skills" href=" expertise" />
 
       <LogoLoop
