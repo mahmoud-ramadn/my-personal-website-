@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod"
 import {
   AlertCircle,
   ArrowUpRight,
@@ -11,35 +12,19 @@ import {
   Sparkles,
   User,
 } from "lucide-react"
+import * as z from "zod"
 
 import React, { useState } from "react"
+import { useForm } from "react-hook-form"
 import { SiGithub, SiLinkedin, SiX } from "react-icons/si"
 
-// Mock utility function
-const cn = (...classes: string[]) => classes.filter(Boolean).join(" ")
+import { cn } from "@/lib/utils"
 
-// Enhanced Title Component
-const UITitle = ({ title, href }: { title: string; href: string }) => (
-  <div className="text-center mb-8 md:mb-12 lg:mb-20 relative px-2 sm:px-4">
-    <div className="relative">
-      <div className="flex items-center justify-center gap-1 sm:gap-2 md:gap-4 mb-3 sm:mb-4 md:mb-6">
-        <div className="h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent flex-1 max-w-8 sm:max-w-10 md:max-w-20"></div>
-        <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 text-blue-400 animate-pulse" />
-        <div className="h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent flex-1 max-w-8 sm:max-w-10 md:max-w-20"></div>
-      </div>
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import UITitle from "../ui-title"
 
-      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-2 sm:mb-3 md:mb-4 tracking-tight leading-tight">
-        {title} <span className="text-white drop-shadow-2xl">{href}</span>
-      </h2>
-
-      <p className="text-gray-400 text-xs sm:text-sm md:text-base lg:text-lg max-w-xs sm:max-w-lg md:max-w-2xl mx-auto leading-relaxed px-2 sm:px-4">
-        Ready to collaborate? Let's connect and turn your ideas into reality
-      </p>
-
-      <div className="mt-3 sm:mt-4 md:mt-6 w-16 sm:w-20 md:w-32 h-0.5 sm:h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 mx-auto rounded-full shadow-lg shadow-purple-400/30"></div>
-    </div>
-  </div>
-)
 
 type SocialLink = {
   name: string
@@ -80,6 +65,23 @@ const socialLinks: SocialLink[] = [
   },
 ]
 
+const contactFormSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters long" }),
+
+  email: z
+    .string()
+    .email({ message: "Please enter a valid email address" })
+    .min(5, { message: "Email must be at least 5 characters long" })
+    .max(100, { message: "Email must be less than 100 characters" }),
+  message: z
+    .string()
+    .min(10, { message: "Message must be at least 10 characters long" })
+    .max(1000, { message: "Message must be less than 1000 characters" })
+    .trim(),
+})
+
+type ContactFormData = z.infer<typeof contactFormSchema>
+
 const contactInfo: ContactInfo[] = [
   {
     label: "Email",
@@ -101,76 +103,49 @@ const contactInfo: ContactInfo[] = [
 ]
 
 export default function EnhancedContactUI() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
+  // React Hook Form setup with Zod validation
+  const form = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      message: "",
+    },
+  })
 
-  const handleSubmit = async (e?: React.FormEvent) => {
-    if (e) {
-      e.preventDefault()
-    }
-
+  const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true)
     setSubmitStatus("idle")
 
     try {
-      const response = await fetch("https://formspree.io/f/mnqyabcd", {
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
-          Accept: "application/json",
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          _replyto: formData.email,
+          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+          name: data.name,
+          email: data.email,
+          message: data.message,
         }),
       })
 
-      if (response.ok) {
+      const result = await response.json()
+
+      if (result.success) {
         setSubmitStatus("success")
-        setFormData({ name: "", email: "", message: "" })
+        form.reset()
       } else {
+        console.log("Web3Forms error:", result)
         throw new Error("Form service error")
       }
     } catch (error) {
-      console.log("Form service failed, falling back to mailto")
-
-      try {
-        const subject = encodeURIComponent(`New Contact from ${formData.name}`)
-        const body = encodeURIComponent(
-          `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-        )
-
-        const mailtoLink = `mailto:mahmoudramdan2000135@gmail.com?subject=${subject}&body=${body}`
-
-        const link = document.createElement("a")
-        link.href = mailtoLink
-        link.target = "_blank"
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-
-        setTimeout(() => {
-          setSubmitStatus("success")
-          setFormData({ name: "", email: "", message: "" })
-        }, 500)
-      } catch (mailtoError) {
-        setSubmitStatus("error")
-      }
+      setSubmitStatus("error")
     } finally {
       setIsSubmitting(false)
     }
@@ -179,7 +154,6 @@ export default function EnhancedContactUI() {
   return (
     <div className="min-h-screen  text-white relative overflow-hidden">
       {/* Background Effects */}
-    
 
       <div className="relative z-10 px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-12 lg:py-16">
         <UITitle title="Get In" href="Touch" />
@@ -290,123 +264,127 @@ export default function EnhancedContactUI() {
                     </h3>
                   </div>
 
-                  <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 md:space-y-6">
-                    {/* Name Input */}
-                    <div className="relative">
-                      <label
-                        htmlFor="name"
-                        className="block text-xs sm:text-sm font-semibold text-gray-300 mb-1 sm:mb-2"
-                      >
-                        Your Name
-                      </label>
-                      <div className="relative">
-                        <User className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
-                        <input
-                          type="text"
-                          id="name"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          required
-                          className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 md:py-4 bg-gray-800/50 border border-gray-600/50 rounded-lg sm:rounded-xl focus:outline-none focus:border-blue-400/60 focus:bg-gray-800/70 transition-all duration-300 text-white placeholder-gray-400 text-sm sm:text-base"
-                          placeholder="Enter your full name"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Email Input */}
-                    <div className="relative">
-                      <label
-                        htmlFor="email"
-                        className="block text-xs sm:text-sm font-semibold text-gray-300 mb-1 sm:mb-2"
-                      >
-                        Email Address
-                      </label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          required
-                          className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 md:py-4 bg-gray-800/50 border border-gray-600/50 rounded-lg sm:rounded-xl focus:outline-none focus:border-blue-400/60 focus:bg-gray-800/70 transition-all duration-300 text-white placeholder-gray-400 text-sm sm:text-base"
-                          placeholder="your.email@example.com"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Message Textarea */}
-                    <div className="relative">
-                      <label
-                        htmlFor="message"
-                        className="block text-xs sm:text-sm font-semibold text-gray-300 mb-1 sm:mb-2"
-                      >
-                        Your Message
-                      </label>
-                      <div className="relative">
-                        <MessageSquare className="absolute left-3 sm:left-4 top-4 sm:top-6 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
-                        <textarea
-                          id="message"
-                          name="message"
-                          value={formData.message}
-                          onChange={handleInputChange}
-                          required
-                          rows={5}
-                          className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 md:py-4 bg-gray-800/50 border border-gray-600/50 rounded-lg sm:rounded-xl focus:outline-none focus:border-blue-400/60 focus:bg-gray-800/70 transition-all duration-300 text-white placeholder-gray-400 resize-none text-sm sm:text-base min-h-[120px] sm:min-h-[140px]"
-                          placeholder="Tell me about your project, ideas, or just say hello..."
-                        />
-                      </div>
-                    </div>
-
-                    {/* Submit Button */}
-                    <div className="pt-2 sm:pt-4">
-                      <button
-                        type="submit"
-                        disabled={isSubmitting || !formData.name || !formData.email || !formData.message}
-                        className={cn(
-                          "w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 group/submit disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 text-sm sm:text-base",
-                          submitStatus === "success" ? "from-green-500 to-green-600" : "",
-                          submitStatus === "error" ? "from-red-500 to-red-600" : ""
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4 md:space-y-6">
+                      {/* Name Input */}
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs sm:text-sm font-semibold text-gray-300">Your Name</FormLabel>
+                            <FormControl>
+                              <div className="relative">
+                                <User className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 z-10" />
+                                <Input
+                                  placeholder="Enter your full name"
+                                  className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 md:py-4 bg-gray-800/50 border border-gray-600/50 rounded-lg sm:rounded-xl focus:outline-none focus:border-blue-400/60 focus:bg-gray-800/70 transition-all duration-300 text-white placeholder-gray-400 text-sm sm:text-base focus-visible:ring-0 focus-visible:ring-offset-0"
+                                  {...field}
+                                />
+                              </div>
+                            </FormControl>
+                            <FormMessage className="text-red-400 text-xs sm:text-sm" />
+                          </FormItem>
                         )}
-                      >
-                        {isSubmitting ? (
-                          <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2 sm:mr-3" />
-                        ) : submitStatus === "success" ? (
-                          <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3" />
-                        ) : submitStatus === "error" ? (
-                          <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3" />
-                        ) : (
-                          <Send className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 group-hover/submit:translate-x-1 transition-transform duration-300" />
-                        )}
-                        {isSubmitting
-                          ? "Sending Message..."
-                          : submitStatus === "success"
-                            ? "Message Sent!"
-                            : submitStatus === "error"
-                              ? "Try Again"
-                              : "Send Message"}
-                      </button>
-                    </div>
+                      />
 
-                    {/* Status Messages */}
-                    {submitStatus === "success" && (
-                      <div className="p-3 sm:p-4 bg-green-500/10 border border-green-500/30 rounded-lg sm:rounded-xl">
-                        <p className="text-green-400 text-xs sm:text-sm">
-                          Message sent successfully! I'll get back to you soon.
-                        </p>
+                      {/* Email Input */}
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs sm:text-sm font-semibold text-gray-300">
+                              Email Address
+                            </FormLabel>
+                            <FormControl>
+                              <div className="relative">
+                                <Mail className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 z-10" />
+                                <Input
+                                  type="email"
+                                  placeholder="your.email@example.com"
+                                  className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 md:py-4 bg-gray-800/50 border border-gray-600/50 rounded-lg sm:rounded-xl focus:outline-none focus:border-blue-400/60 focus:bg-gray-800/70 transition-all duration-300 text-white placeholder-gray-400 text-sm sm:text-base focus-visible:ring-0 focus-visible:ring-offset-0"
+                                  {...field}
+                                />
+                              </div>
+                            </FormControl>
+                            <FormMessage className="text-red-400 text-xs sm:text-sm" />
+                          </FormItem>
+                        )}
+                      />
+
+                      {/* Message Textarea */}
+                      <FormField
+                        control={form.control}
+                        name="message"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs sm:text-sm font-semibold text-gray-300">
+                              Your Message
+                            </FormLabel>
+                            <FormControl>
+                              <div className="relative">
+                                <MessageSquare className="absolute left-3 sm:left-4 top-4 sm:top-6 w-4 h-4 sm:w-5 sm:h-5 text-gray-400 z-10" />
+                                <Textarea
+                                  placeholder="Tell me about your project, ideas, or just say hello..."
+                                  className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 md:py-4 bg-gray-800/50 border border-gray-600/50 rounded-lg sm:rounded-xl focus:outline-none focus:border-blue-400/60 focus:bg-gray-800/70 transition-all duration-300 text-white placeholder-gray-400 resize-none text-sm sm:text-base min-h-[120px] sm:min-h-[140px] focus-visible:ring-0 focus-visible:ring-offset-0"
+                                  rows={5}
+                                  {...field}
+                                />
+                              </div>
+                            </FormControl>
+                            <FormMessage className="text-red-400 text-xs sm:text-sm" />
+                          </FormItem>
+                        )}
+                      />
+
+                      {/* Submit Button */}
+                      <div className="pt-2 sm:pt-4">
+                        <button
+                          type="submit"
+                          className={cn(
+                            "w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-lg sm:rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 group/submit disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 text-sm sm:text-base",
+                            submitStatus === "success" ? "from-green-500 to-green-600" : "",
+                            submitStatus === "error" ? "from-red-500 to-red-600" : ""
+                          )}
+                        >
+                          {isSubmitting ? (
+                            <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2 sm:mr-3" />
+                          ) : submitStatus === "success" ? (
+                            <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3" />
+                          ) : submitStatus === "error" ? (
+                            <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3" />
+                          ) : (
+                            <Send className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 group-hover/submit:translate-x-1 transition-transform duration-300" />
+                          )}
+                          {isSubmitting
+                            ? "Sending Message..."
+                            : submitStatus === "success"
+                              ? "Message Sent!"
+                              : submitStatus === "error"
+                                ? "Try Again"
+                                : "Send Message"}
+                        </button>
                       </div>
-                    )}
-                    {submitStatus === "error" && (
-                      <div className="p-3 sm:p-4 bg-red-500/10 border border-red-500/30 rounded-lg sm:rounded-xl">
-                        <p className="text-red-400 text-xs sm:text-sm">
-                          Unable to send message. Please try again or contact me directly at
-                          mahmoudramdan2000135@gmail.com
-                        </p>
-                      </div>
-                    )}
-                  </form>
+
+                      {/* Status Messages */}
+                      {submitStatus === "success" && (
+                        <div className="p-3 sm:p-4 bg-green-500/10 border border-green-500/30 rounded-lg sm:rounded-xl">
+                          <p className="text-green-400 text-xs sm:text-sm">
+                            ✅ Message sent successfully! I'll get back to you soon.
+                          </p>
+                        </div>
+                      )}
+                      {submitStatus === "error" && (
+                        <div className="p-3 sm:p-4 bg-red-500/10 border border-red-500/30 rounded-lg sm:rounded-xl">
+                          <p className="text-red-400 text-xs sm:text-sm">
+                            ⚠️ Unable to send message. Please try again or contact me directly at
+                            mahmoudramdan2000135@gmail.com
+                          </p>
+                        </div>
+                      )}
+                    </form>
+                  </Form>
                 </div>
               </div>
 

@@ -3,7 +3,7 @@ import { useGesture } from "@use-gesture/react"
 
 import { useCallback, useEffect, useMemo, useRef } from "react"
 
-type ImageItem = string | { src: string; alt?: string }
+type ImageItem = string | { src: string; alt?: string; website: string; sourceCode: string }
 
 type DomeGalleryProps = {
   images?: ImageItem[]
@@ -28,45 +28,18 @@ type DomeGalleryProps = {
 type ItemDef = {
   src: string
   alt: string
+  website?: string
+  sourceCode?: string
   x: number
   y: number
   sizeX: number
   sizeY: number
 }
 
-const DEFAULT_IMAGES: ImageItem[] = [
-  {
-    src: "https://scontent.fcai21-4.fna.fbcdn.net/v/t39.30808-6/487085984_2526580251007008_5860410075897963384_n.jpg?stp=dst-jpg_s1080x2048_tt6&_nc_cat=103&ccb=1-7&_nc_sid=669761&_nc_ohc=-15ZjJ734SIQ7kNvwHJMbns&_nc_oc=AdkLF41TtaHv27Y2RFwer23SIRgaMHC7jmjQaz9DDalZG5GT_jVLGrAZ3GzCuxcNfgI&_nc_zt=23&_nc_ht=scontent.fcai21-4.fna&_nc_gid=XwILbxwLAlVVGZtQqgr2dA&oh=00_AfXjQ6j9ltITm8SMRnxWyqwaB-nhoMRpbEp8UgSxoT-NPQ&oe=68BD25C0",
-    alt: "Abstract art",
-  },
-  {
-    src: "https://scontent.fcai21-4.fna.fbcdn.net/v/t1.6435-9/93372646_2655426448112749_6310029220999331840_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=5bbf69&_nc_ohc=oEDaB_cO-VEQ7kNvwFjHpa6&_nc_oc=AdkxLq9GlZ6Z-cCQUG2TPS4cEkhfIzIJiQR0ANFVCXlL2RfjE3HFjA4kxVarrtzBUmc&_nc_zt=23&_nc_ht=scontent.fcai21-4.fna&_nc_gid=nNPj6B1STtTDCTwWeNACqw&oh=00_AfXrGASi4j0ffhcR1mJsE3R9lqCzUbxGI0T0uB41eau_5A&oe=68DEBD05",
-    alt: "Modern sculpture",
-  },
+// Default project images - replace with your actual projects
+const DEFAULT_IMAGES: ImageItem[] = []
 
-  {
-    src: "https://res.cloudinary.com/dtny7jzz1/image/upload/v1755187017/Scooby/Users/161537824_1463349770663400_7357648346111417589_n.jpg.jpg",
-    alt: "Contemporary art",
-  },
-  {
-    src: "https://scontent.fcai21-4.fna.fbcdn.net/v/t1.6435-9/40007782_883113778556896_7051862217246900224_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=Q1F4z00fnxkQ7kNvwGWftL4&_nc_oc=AdmkPrCvS6qFhdDocTfx5xsyI4dBw447hhNxDolUWQRrp_Z7rbv19BRWNd0gvAqlKzM&_nc_zt=23&_nc_ht=scontent.fcai21-4.fna&_nc_gid=mvWNYKnR_LU-696NapAerA&oh=00_AfWcx3hniERj7cQ8Sk3vll55Rz3yk277GqYMiSTvclpsdw&oe=68DEB2D0",
-    alt: "Geometric pattern",
-  },
-  {
-    src: "https://scontent.fcai21-3.fna.fbcdn.net/v/t39.30808-6/536572865_2667949473536751_3918993336841375960_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=669761&_nc_ohc=sSlAAJ8rScwQ7kNvwHrXWAg&_nc_oc=AdlyNwLm20S49vQe6tWEQphLUoPrBGAU-nE79lMXyvCu2mpLMUcu40xFgxos2ndKil4&_nc_zt=23&_nc_ht=scontent.fcai21-3.fna&_nc_gid=p1nku2hLQ1--msZSoWU5oA&oh=00_AfUcR3ZGMw7f3a5nZ5iQb_5ZVFbMMu5wG-NrTg7Us95WgA&oe=68BCF9CD",
-
-    alt: "test",
-  },
-  {
-    src: "https://scontent.fcai21-3.fna.fbcdn.net/v/t39.30808-6/472236975_2459299944401706_4070457973693321797_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=669761&_nc_ohc=oZvD1n0XAqcQ7kNvwGDUJzy&_nc_oc=AdmB2B4SSRFB8AoudVpfGfkM2Sfjes71zZMejbppTcmDU-HX-u1u8HYM34VE6_B05d8&_nc_zt=23&_nc_ht=scontent.fcai21-3.fna&_nc_gid=7LH3w9El55Ba0IdHBhjKDw&oh=00_AfVZyDe5MgqcN0mbWHaUCtrkyKBjZ0pyKr-U4eyTLYc2Kg&oe=68BD1E1A",
-    alt: "Textured surface",
-  },
-  {
-    src: "https://res.cloudinary.com/dtny7jzz1/image/upload/v1756378917/Scooby/community/gulfpicasso-edited-image.png.jpg",
-    alt: "Social media image",
-  },
-]
-
+// Constants and utility functions
 const DEFAULTS = {
   maxVerticalRotationDeg: 5,
   dragSensitivity: 20,
@@ -80,12 +53,14 @@ const wrapAngleSigned = (deg: number) => {
   const a = (((deg + 180) % 360) + 360) % 360
   return a - 180
 }
+
 const getDataNumber = (el: HTMLElement, name: string, fallback: number) => {
   const attr = el.dataset[name] ?? el.getAttribute(`data-${name}`)
   const n = attr == null ? NaN : parseFloat(attr)
   return Number.isFinite(n) ? n : fallback
 }
 
+// Build items for the 3D gallery
 function buildItems(pool: ImageItem[], seg: number): ItemDef[] {
   const xCols = Array.from({ length: seg }, (_, i) => -37 + i * 2)
   const evenYs = [-4, -2, 0, 2, 4]
@@ -108,13 +83,19 @@ function buildItems(pool: ImageItem[], seg: number): ItemDef[] {
 
   const normalizedImages = pool.map((image) => {
     if (typeof image === "string") {
-      return { src: image, alt: "" }
+      return { src: image, alt: "", website: "", sourceCode: "" }
     }
-    return { src: image.src || "", alt: image.alt || "" }
+    return {
+      src: image.src || "",
+      alt: image.alt || "",
+      website: image.website || "",
+      sourceCode: image.sourceCode || "",
+    }
   })
 
   const usedImages = Array.from({ length: totalSlots }, (_, i) => normalizedImages[i % normalizedImages.length])
 
+  // Shuffle to avoid duplicate adjacent images
   for (let i = 1; i < usedImages.length; i++) {
     if (usedImages[i].src === usedImages[i - 1].src) {
       for (let j = i + 1; j < usedImages.length; j++) {
@@ -132,14 +113,103 @@ function buildItems(pool: ImageItem[], seg: number): ItemDef[] {
     ...c,
     src: usedImages[i].src,
     alt: usedImages[i].alt,
+    website: usedImages[i].website,
+    sourceCode: usedImages[i].sourceCode,
   }))
 }
 
+// Calculate rotation for 3D positioning
 function computeItemBaseRotation(offsetX: number, offsetY: number, sizeX: number, sizeY: number, segments: number) {
   const unit = 360 / segments / 2
   const rotateY = unit * (offsetX + (sizeX - 1) / 2)
   const rotateX = unit * (offsetY - (sizeY - 1) / 2)
   return { rotateX, rotateY }
+}
+
+// Create interactive buttons for project links
+function createProjectButtons(website: string, sourceCode: string): HTMLElement {
+  const buttonsContainer = document.createElement("div")
+  buttonsContainer.className = "gallery-buttons"
+  buttonsContainer.style.cssText = `
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 12px;
+    z-index: 1000;
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease;
+    pointer-events: auto;
+  `
+
+  if (website) {
+    const liveButton = document.createElement("button")
+    liveButton.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15,3 21,3 21,9"/>
+        <line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>
+      Live Demo
+    `
+    liveButton.style.cssText = `
+      display: flex; align-items: center; gap: 8px; padding: 8px 16px;
+      background: rgba(59, 130, 246, 0.9); color: white; border: none;
+      border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer;
+      transition: all 0.2s ease; backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    `
+    liveButton.addEventListener("mouseenter", () => {
+      liveButton.style.background = "rgba(59, 130, 246, 1)"
+      liveButton.style.transform = "translateY(-2px)"
+      liveButton.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.25)"
+    })
+    liveButton.addEventListener("mouseleave", () => {
+      liveButton.style.background = "rgba(59, 130, 246, 0.9)"
+      liveButton.style.transform = "translateY(0)"
+      liveButton.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.15)"
+    })
+    liveButton.addEventListener("click", (e) => {
+      e.stopPropagation()
+      window.open(website, "_blank", "noopener,noreferrer")
+    })
+    buttonsContainer.appendChild(liveButton)
+  }
+
+  if (sourceCode) {
+    const sourceButton = document.createElement("button")
+    sourceButton.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+      </svg>
+      GitHub
+    `
+    sourceButton.style.cssText = `
+      display: flex; align-items: center; gap: 8px; padding: 8px 16px;
+      background: rgba(17, 24, 39, 0.9); color: white; border: none;
+      border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer;
+      transition: all 0.2s ease; backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    `
+    sourceButton.addEventListener("mouseenter", () => {
+      sourceButton.style.background = "rgba(17, 24, 39, 1)"
+      sourceButton.style.transform = "translateY(-2px)"
+      sourceButton.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.25)"
+    })
+    sourceButton.addEventListener("mouseleave", () => {
+      sourceButton.style.background = "rgba(17, 24, 39, 0.9)"
+      sourceButton.style.transform = "translateY(0)"
+      sourceButton.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.15)"
+    })
+    sourceButton.addEventListener("click", (e) => {
+      e.stopPropagation()
+      window.open(sourceCode, "_blank", "noopener,noreferrer")
+    })
+    buttonsContainer.appendChild(sourceButton)
+  }
+
+  return buttonsContainer
 }
 
 export default function DomeGallery({
@@ -610,11 +680,20 @@ export default function DomeGallery({
     overlay.style.cssText = `position:absolute; left:${frameR.left - mainR.left}px; top:${frameR.top - mainR.top}px; width:${frameR.width}px; height:${frameR.height}px; opacity:0; z-index:30; will-change:transform,opacity; transform-origin:top left; transition:transform ${enlargeTransitionMs}ms ease, opacity ${enlargeTransitionMs}ms ease; border-radius:${openedImageBorderRadius}; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.35);`
     const rawSrc = parent.dataset.src || (el.querySelector("img") as HTMLImageElement)?.src || ""
     const rawAlt = parent.dataset.alt || (el.querySelector("img") as HTMLImageElement)?.alt || ""
+    const rawWebsite = parent.dataset.website || ""
+    const rawSourceCode = parent.dataset.sourceCode || ""
+
     const img = document.createElement("img")
     img.src = rawSrc
     img.alt = rawAlt
     img.style.cssText = `width:100%; height:100%; object-fit:cover; filter:${grayscale ? "grayscale(1)" : "none"};`
     overlay.appendChild(img)
+
+    // Add project buttons if links are available
+    if (rawWebsite || rawSourceCode) {
+      const buttons = createProjectButtons(rawWebsite, rawSourceCode)
+      overlay.appendChild(buttons)
+    }
     viewerRef.current!.appendChild(overlay)
     const tx0 = tileR.left - frameR.left
     const ty0 = tileR.top - frameR.top
@@ -683,34 +762,21 @@ export default function DomeGallery({
     .sphere, .sphere-item, .item__image { transform-style: preserve-3d; }
     
     .stage {
-      width: 100%;
-      height: 100%;
-      display: grid;
-      place-items: center;
-      position: absolute;
-      inset: 0;
-      margin: auto;
-      perspective: calc(var(--radius) * 2);
-      perspective-origin: 50% 50%;
+      width: 100%; height: 100%; display: grid; place-items: center;
+      position: absolute; inset: 0; margin: auto;
+      perspective: calc(var(--radius) * 2); perspective-origin: 50% 50%;
     }
     
     .sphere {
       transform: translateZ(calc(var(--radius) * -1));
-      will-change: transform;
-      position: absolute;
+      will-change: transform; position: absolute;
     }
     
     .sphere-item {
       width: calc(var(--item-width) * var(--item-size-x));
       height: calc(var(--item-height) * var(--item-size-y));
-      position: absolute;
-      top: -999px;
-      bottom: -999px;
-      left: -999px;
-      right: -999px;
-      margin: auto;
-      transform-origin: 50% 50%;
-      backface-visibility: hidden;
+      position: absolute; top: -999px; bottom: -999px; left: -999px; right: -999px;
+      margin: auto; transform-origin: 50% 50%; backface-visibility: hidden;
       transition: transform 300ms;
       transform: rotateY(calc(var(--rot-y) * (var(--offset-x) + ((var(--item-size-x) - 1) / 2)) + var(--rot-y-delta, 0deg))) 
                  rotateX(calc(var(--rot-x) * (var(--offset-y) - ((var(--item-size-y) - 1) / 2)) + var(--rot-x-delta, 0deg))) 
@@ -718,44 +784,22 @@ export default function DomeGallery({
     }
     
     .sphere-root[data-enlarging="true"] .scrim {
-      opacity: 1 !important;
-      pointer-events: all !important;
+      opacity: 1 !important; pointer-events: all !important;
+    }
+    
+    .item__image {
+      position: absolute; inset: 10px;
+      border-radius: var(--tile-radius, 12px); overflow: hidden; cursor: pointer;
+      backface-visibility: hidden; transition: transform 300ms; pointer-events: auto;
+      transform: translateZ(0);
+    }
+    
+    .item__image--reference {
+      position: absolute; inset: 10px; pointer-events: none;
     }
     
     @media (max-aspect-ratio: 1/1) {
-      .viewer-frame {
-        height: auto !important;
-        width: 100% !important;
-      }
-    }
-    
-    // body.dg-scroll-lock {
-    //   position: fixed !important;
-    //   top: 0;
-    //   left: 0;
-    //   width: 100% !important;
-    //   height: 100% !important;
-    //   overflow: hidden !important;
-    //   touch-action: none !important;
-    //   overscroll-behavior: contain !important;
-    // }
-    .item__image {
-      position: absolute;
-      inset: 10px;
-      border-radius: var(--tile-radius, 12px);
-      overflow: hidden;
-      cursor: pointer;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      transition: transform 300ms;
-      pointer-events: auto;
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
-    }
-    .item__image--reference {
-      position: absolute;
-      inset: 10px;
-      pointer-events: none;
+      .viewer-frame { height: auto !important; width: 100% !important; }
     }
   `
 
@@ -792,6 +836,8 @@ export default function DomeGallery({
                   className="sphere-item absolute m-auto"
                   data-src={it.src}
                   data-alt={it.alt}
+                  data-website={it.website || ""}
+                  data-source-code={it.sourceCode || ""}
                   data-offset-x={it.x}
                   data-offset-y={it.y}
                   data-size-x={it.sizeX}
@@ -843,35 +889,6 @@ export default function DomeGallery({
               ))}
             </div>
           </div>
-
-          <div
-            className="absolute inset-0 m-auto z-[3] pointer-events-none"
-            style={{
-              backgroundImage: `radial-gradient(rgba(235, 235, 235, 0) 65%, var(--overlay-blur-color, ${overlayBlurColor}) 100%)`,
-            }}
-          />
-
-          <div
-            className="absolute inset-0 m-auto z-[3] pointer-events-none"
-            style={{
-              WebkitMaskImage: `radial-gradient(rgba(235, 235, 235, 0) 70%, var(--overlay-blur-color, ${overlayBlurColor}) 90%)`,
-              maskImage: `radial-gradient(rgba(235, 235, 235, 0) 70%, var(--overlay-blur-color, ${overlayBlurColor}) 90%)`,
-              backdropFilter: "blur(3px)",
-            }}
-          />
-
-          <div
-            className="absolute left-0 right-0 top-0 h-[120px] z-[5] pointer-events-none rotate-180"
-            style={{
-              background: `linear-gradient(to bottom, transparent, var(--overlay-blur-color, ${overlayBlurColor}))`,
-            }}
-          />
-          <div
-            className="absolute left-0 right-0 bottom-0 h-[120px] z-[5] pointer-events-none"
-            style={{
-              background: `linear-gradient(to bottom, transparent, var(--overlay-blur-color, ${overlayBlurColor}))`,
-            }}
-          />
 
           <div
             ref={viewerRef}
