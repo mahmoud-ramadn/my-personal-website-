@@ -1,25 +1,11 @@
-import LightRays from "@/components/LightRays"
 import TextType from "@/components/TextType"
+import Hero from "@/components/ui/home/hero"
 
-import Hero from "./hero"
 
 export default function MainHero() {
   return (
-    <div className=" relative md:h-[700px]">
-      <LightRays
-        raysOrigin="top-center"
-        raysColor="#00ffff"
-        raysSpeed={1.5}
-        lightSpread={0.8}
-        rayLength={1.2}
-        followMouse={true}
-        mouseInfluence={0.1}
-        noiseAmount={0.1}
-        distortion={0.05}
-        className="custom-rays "
-      />
-      <div className=" w-full flex md:flex-row flex-col items-center gap-10 md:absolute md:left-1/2 md:-translate-x-1/2  top-[200px]  justify-between">
-        <Hero className=" md:basis-1/2   basis-1 flex items-center     justify-center " />
+      <div className=" container mx-auto w-full flex md:flex-row flex-col items-center gap-10 justify-between">
+        <Hero className=" md:basis-1/2   basis-1 flex items-center  " />
         <TextType
           text={[
             "Hi, I'm Mahmoud Ramadan",
@@ -34,6 +20,5 @@ export default function MainHero() {
           cursorCharacter="|"
         />
       </div>
-    </div>
   )
 }
