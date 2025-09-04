@@ -18,10 +18,10 @@ const transformStyles = [
   "rotate(-5deg) translate(150px)",
 ]
 
-export default function Projects() {
+export default function Experience() {
   return (
     <section className=" container flex items-center justify-center flex-col min-h-[700px]" >
-      <UITitle title="My" href="Projects" />
+      <UITitle title="My" href="experience" />
       <div className=" flex items-center justify-center">
         <BounceCards
           className="custom-bounceCards"

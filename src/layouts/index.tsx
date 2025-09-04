@@ -5,8 +5,8 @@ import LightRays from "@/components/LightRays"
 
 export default function DefaultLayout() {
   return (
-    <main className=" overflow-hidden bg-slate-950 relative  md:pt-[200px] pt-[250px] ">
-      <div style={{width: "100vw",height: "100vh"}} className=" absolute left-1/2  -translate-x-1/2  top-0" >
+    <main className=" overflow-hidden bg-slate-950 relative  md:pt-[200px]  ">
+      <div style={{width: "100vw"}} className=" md:absolute md:left-1/2 md:h-1/3  md:-translate-x-1/2  top-0" >
             <LightRays
         raysOrigin="top-center"
         raysColor="#00ffff"
@@ -22,7 +22,7 @@ export default function DefaultLayout() {
 
       </div>
       <SplashCursor />
-      <main className=" container mx-auto px-4  min-h-screen  ">
+      <main className=" container mx-auto px-4   ">
         <Outlet />
       </main>
     </main>
