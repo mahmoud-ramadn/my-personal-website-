@@ -13,7 +13,7 @@ import {
 } from "lucide-react"
 
 import React, { useState } from "react"
-import { SiFacebook, SiGithub, SiInstagram, SiLinkedin, SiTelegram, SiX } from "react-icons/si"
+import {  SiGithub,SiLinkedin, SiX } from "react-icons/si"
 
 // Mock utility function
 const cn = (...classes: string[]) => classes.filter(Boolean).join(" ")
