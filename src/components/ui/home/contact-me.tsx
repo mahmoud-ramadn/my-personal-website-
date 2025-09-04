@@ -3,6 +3,7 @@ import {
   AlertCircle,
   ArrowUpRight,
   CheckCircle,
+  Download,
   Heart,
   Mail,
   MapPin,
@@ -206,6 +207,33 @@ export default function EnhancedContactUI() {
                         </div>
                       </div>
                     ))}
+
+                    {/* CV Download Button */}
+                    <div className="pt-2 sm:pt-4 md:pt-6">
+                      <a
+                        href="/Mahmoud Ramadan -dev-cv.pdf"
+                        download="Mahmoud_Ramadan_CV.pdf"
+                        className="group/cv flex items-center justify-center w-full p-3 sm:p-4 md:p-5 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 hover:from-emerald-500/20 hover:to-teal-500/20 border border-emerald-500/30 hover:border-emerald-400/50 rounded-lg sm:rounded-xl md:rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-emerald-500/25"
+                      >
+                        <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+                          <div className="relative">
+                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 rounded-lg sm:rounded-xl blur-md group-hover/cv:blur-lg transition-all duration-300"></div>
+                            <div className="relative p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 group-hover/cv:border-emerald-400/50 group-hover/cv:bg-emerald-500/30 transition-all duration-300 group-hover/cv:scale-110">
+                              <Download className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-emerald-400 group-hover/cv:text-emerald-300 transition-colors duration-300" />
+                            </div>
+                          </div>
+                          <div className="text-center sm:text-left">
+                            <h4 className="font-bold text-sm sm:text-base md:text-lg text-white group-hover/cv:text-emerald-300 transition-colors duration-300">
+                              Download CV
+                            </h4>
+                            <p className="text-xs sm:text-sm text-gray-400 group-hover/cv:text-gray-300 transition-colors duration-300">
+                              Get my resume in PDF format
+                            </p>
+                          </div>
+                          <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-emerald-400 opacity-0 group-hover/cv:opacity-100 transition-all duration-300 transform group-hover/cv:translate-x-1 group-hover/cv:-translate-y-1 ml-auto" />
+                        </div>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -467,6 +495,14 @@ export default function EnhancedContactUI() {
                         >
                           <Mail className="w-5 h-5 mr-2 group-hover/cta:animate-bounce" />
                           Start a Project
+                        </a>
+                        <a
+                          href="/Mahmoud Ramadan -dev-cv.pdf"
+                          download="Mahmoud_Ramadan_CV.pdf"
+                          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/25 group/download"
+                        >
+                          <Download className="w-5 h-5 mr-2 group-hover/download:animate-bounce" />
+                          Download CV
                         </a>
                         <a
                           href="#"
