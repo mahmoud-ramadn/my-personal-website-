@@ -177,7 +177,7 @@ const TextType = ({
       className: `inline-block whitespace-pre-wrap tracking-tight ${className}`,
       ...props,
     },
-    <span className="inline" style={{ color: getCurrentTextColor() }}>
+    <span className="inline  " style={{ color: getCurrentTextColor() }}  >
       <GradientText
         colors={["violet", "white", "#40ffaa", "#4079ff", "blue"]}
         animationSpeed={3}

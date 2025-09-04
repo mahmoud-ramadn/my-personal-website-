@@ -4,7 +4,7 @@ import Hero from "@/components/ui/home/hero"
 
 export default function MainHero() {
   return (
-      <div className=" container mx-auto w-full flex md:flex-row flex-col items-center gap-10 justify-between">
+      <div className=" container mx-auto w-full flex md:flex-row flex-col items-center gap-10  justify-around">
         <Hero className=" md:basis-1/2   basis-1 flex items-center  " />
         <TextType
           text={[
@@ -16,7 +16,7 @@ export default function MainHero() {
           typingSpeed={75}
           pauseDuration={1500}
           showCursor={true}
-          className="  md:basis-1/2 basis-1 text-center md:text-7xl text-2xl"
+          className="  md:basis-1/2 basis-1 text-center md:text-7xl     text-2xl"
           cursorCharacter="|"
         />
       </div>
