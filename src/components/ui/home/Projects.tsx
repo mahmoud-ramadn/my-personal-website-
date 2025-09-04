@@ -1,22 +1,17 @@
-import alsmasy from "@/assets/images/project/almasy.png";
-import damain from "@/assets/images/project/daman.png";
-import Diatatan from "@/assets/images/project/diataftan.png";
-import furion from "@/assets/images/project/furion.png";
-import petCar from "@/assets/images/project/pet-care.png";
-import Shope from "@/assets/images/project/shope.png";
-import todo from "@/assets/images/project/todo.png";
-import UI from "@/assets/images/project/ui.png";
-import Vue from "@/assets/images/project/vue.png";
-import Welcom from "@/assets/images/project/welcom.png";
-import DomeGallery from "@/components/DomeGallery";
+import alsmasy from "@/assets/images/project/almasy.png"
+import damain from "@/assets/images/project/daman.png"
+import Dashbord from "@/assets/images/project/dashbord.png"
+import Diatatan from "@/assets/images/project/diataftan.png"
+import furion from "@/assets/images/project/furion.png"
+import petCar from "@/assets/images/project/pet-care.png"
+import Shope from "@/assets/images/project/shope.png"
+import todo from "@/assets/images/project/todo.png"
+import UI from "@/assets/images/project/ui.png"
+import Vue from "@/assets/images/project/vue.png"
+import Welcom from "@/assets/images/project/welcom.png"
+import DomeGallery from "@/components/DomeGallery"
 
-
-
-import UITitle from "../ui-title";
-
-
-
-
+import UITitle from "../ui-title"
 
 const projectImages = [
   {
@@ -78,6 +73,12 @@ const projectImages = [
     alt: "Dashboard Analytics",
     website: "https://dhameen.sa/",
     sourceCode: "https://github.com/mahmoud-ramadn/",
+  },
+  {
+    src: Dashbord,
+    alt: "Dashboard Analytics",
+    website: "https://pet-care-website-amber.vercel.app/admin-dashboard",
+    sourceCode: "https://github.com/mahmoud-ramadn/Pet-care-Website",
   },
 ]
 

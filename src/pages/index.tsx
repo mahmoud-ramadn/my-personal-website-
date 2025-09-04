@@ -8,10 +8,10 @@ export default function Home() {
   return (
     <>
       <MainHero />
-        <Skills />
-        <Projects/>
-        <Experience />
-        <EnhancedContactUI/>
+      <Skills />
+      <Projects />
+      <Experience />
+      <EnhancedContactUI />
     </>
   )
 }
