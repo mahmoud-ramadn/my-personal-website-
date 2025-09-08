@@ -38,13 +38,7 @@ import LogoLoop from "@/components/LogoLoop"
 
 import UITitle from "../ui-title"
 
-// Custom TanStack icons components
-const TanStackTableIcon = () => (
-  <div className="relative">
-    <BiTable className="text-[#FF6B35]" />
-    <div className="absolute -top-1 -right-1 w-2 h-2 bg-orange-500 rounded-full"></div>
-  </div>
-)
+
 
 const TanStackQueryIcon = () => (
   <div className="relative">
