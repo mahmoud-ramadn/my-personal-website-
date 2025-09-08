@@ -153,7 +153,7 @@ export default function EnhancedContactUI() {
   }
 
   return (
-    <div className="min-h-screen  text-white relative overflow-hidden">
+    <div id="contact" className="min-h-screen  text-white relative overflow-hidden">
       {/* Background Effects */}
 
       <div className="relative z-10 px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-12 lg:py-16">

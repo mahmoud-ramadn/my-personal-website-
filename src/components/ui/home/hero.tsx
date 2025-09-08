@@ -1,14 +1,23 @@
+import { cn } from "@/lib/utils"
 
 import ProfileCard from "@/components/ProfileCard"
-import { cn } from "@/lib/utils"
 
 type Props = {
   className?: string
 }
 export default function Hero({ className }: Props) {
-  return (
-    <div className={cn('text',className)}>
+  const handleContactClick = () => {
+    const contactSection = document.getElementById("contact")
+    if (contactSection) {
+      contactSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      })
+    }
+  }
 
+  return (
+    <div className={cn("text", className)}>
       <ProfileCard
         name=""
         title=""
@@ -19,9 +28,8 @@ export default function Hero({ className }: Props) {
         showUserInfo={true}
         enableTilt={true}
         enableMobileTilt={false}
-        onContactClick={() => console.log("Contact clicked")}
+        onContactClick={handleContactClick}
       />
-
     </div>
   )
 }
