@@ -1,5 +1,4 @@
 // Import additional icons for TanStack representation
-import { BiTable } from "react-icons/bi"
 import tansk from "@/assets/images/icons/tansak.png"
 import {
   SiApollographql,
