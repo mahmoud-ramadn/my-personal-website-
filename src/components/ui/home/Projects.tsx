@@ -9,6 +9,7 @@ import todo from "@/assets/images/project/todo.png"
 import UI from "@/assets/images/project/ui.png"
 import Vue from "@/assets/images/project/vue.png"
 import Welcom from "@/assets/images/project/welcom.png"
+import Offern from "@/assets/images/project/offern&cash.png"
 import DomeGallery from "@/components/DomeGallery"
 
 import UITitle from "../ui-title"
@@ -79,6 +80,12 @@ const projectImages = [
     alt: "Dashboard Analytics",
     website: "https://pet-care-website-amber.vercel.app/admin-dashboard",
     sourceCode: "https://github.com/mahmoud-ramadn/Pet-care-Website",
+  },
+  {
+    src:Offern ,
+    alt: "Dashboard Analytics",
+    website: "https://offern.sa/",
+    sourceCode: "https://github.com/mahmoud-ramadn",
   },
 ]
 

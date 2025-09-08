@@ -5,16 +5,6 @@ import UITitle from "../ui-title"
 
 const experienceData: ExperienceData[] = [
   {
-    id: "ai-trainee",
-    title: "AI Trainee",
-    company: "Tech Innovators Inc",
-    period: "2023 - 2024",
-    description:
-      "Worked on machine learning projects, developed AI models, and learned about neural networks and deep learning frameworks.",
-    skills: ["Python", "TensorFlow", "Machine Learning", "Data Analysis", "Neural Networks"],
-    backgroundColor: "#1e293b",
-  },
-  {
     id: "freelance-dev",
     title: "Freelance Developer",
     company: "Self-Employed",
@@ -35,14 +25,43 @@ const experienceData: ExperienceData[] = [
     backgroundColor: "#0f172a",
   },
   {
-    id: "startup-founder",
-    title: "Startup Co-Founder",
-    company: "InnovateTech Solutions",
-    period: "2023 - Present",
+    id: "FrontEnd-Developer",
+    title: "Frontend Developer - Nuxt.js Specialist",
+    company: "Baianat",
+    period: "2024 - 6 months",
     description:
-      "Co-founded a tech startup focused on innovative web solutions. Led development team and managed client relationships.",
-    skills: ["Leadership", "Business Development", "Full-Stack", "Project Management"],
-    backgroundColor: "#1e1b4b",
+      "Developed high-performance web applications using Nuxt.js and Vue.js ecosystem. Built responsive, SEO-optimized user interfaces, implemented server-side rendering solutions, and collaborated with design teams to deliver pixel-perfect implementations. Enhanced website performance by 40% through code optimization and modern development practices.",
+    skills: [
+      "Nuxt.js",
+      "Vue.js",
+      "TypeScript",
+      "SCSS",
+      "Pinia",
+      "Tailwind CSS",
+      "SSR/SSG",
+      "API Integration",
+      "Performance Optimization",
+    ],
+    backgroundColor: "#065f46",
+  },
+  {
+    id: "cnc-designer",
+    title: "CNC Designer & Programmer",
+    company: "Precision Manufacturing Co.",
+    period: "2020 - 2021",
+    description:
+      "Designed and programmed CNC machining operations for precision parts manufacturing. Created detailed technical drawings, optimized machining processes, and collaborated with production teams to ensure quality and efficiency.",
+    skills: [
+      "AutoCAD",
+      "SolidWorks",
+      "ArtCam",
+      "CNC Programming",
+      "G-Code",
+      "CAM Software",
+      "Technical Drawing",
+      "Quality Control",
+    ],
+    backgroundColor: "#374151",
   },
   {
     id: "open-source",
