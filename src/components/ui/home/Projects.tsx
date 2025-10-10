@@ -3,13 +3,13 @@ import damain from "@/assets/images/project/daman.png"
 import Dashbord from "@/assets/images/project/dashbord.png"
 import Diatatan from "@/assets/images/project/diataftan.png"
 import furion from "@/assets/images/project/furion.png"
+import Offern from "@/assets/images/project/offern&cash.png"
 import petCar from "@/assets/images/project/pet-care.png"
 import Shope from "@/assets/images/project/shope.png"
 import todo from "@/assets/images/project/todo.png"
 import UI from "@/assets/images/project/ui.png"
 import Vue from "@/assets/images/project/vue.png"
 import Welcom from "@/assets/images/project/welcom.png"
-import Offern from "@/assets/images/project/offern&cash.png"
 import DomeGallery from "@/components/DomeGallery"
 
 import UITitle from "../ui-title"
@@ -82,7 +82,7 @@ const projectImages = [
     sourceCode: "https://github.com/mahmoud-ramadn/Pet-care-Website",
   },
   {
-    src:Offern ,
+    src: Offern,
     alt: "Dashboard Analytics",
     website: "https://offern.sa/",
     sourceCode: "https://github.com/mahmoud-ramadn",
@@ -98,8 +98,8 @@ export default function Projects() {
           images={projectImages}
           segments={22}
           minRadius={400}
-          openedImageWidth="300px"
-          openedImageHeight="300px"
+          openedImageWidth="max-w-[700px]"
+          openedImageHeight="max-h-[700px]"
           openedImageBorderRadius="30px"
           overlayBlurColor="rgba(0,0,0,0.5)"
           grayscale={false}

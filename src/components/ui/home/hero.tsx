@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"
 
 import ProfileCard from "@/components/ProfileCard"
+import myIMag from "@/assets/images/mynewImage (2).webp"
 
 type Props = {
   className?: string
@@ -24,9 +25,10 @@ export default function Hero({ className }: Props) {
         handle="Mahmoud Ramadan"
         status="Online"
         contactText="Contact Me"
-        avatarUrl="https://res.cloudinary.com/dtny7jzz1/image/upload/v1755187017/Scooby/Users/161537824_1463349770663400_7357648346111417589_n.jpg.jpg"
+        avatarUrl={myIMag}
         showUserInfo={true}
         enableTilt={true}
+        showBehindGradient={true}
         enableMobileTilt={false}
         onContactClick={handleContactClick}
       />
