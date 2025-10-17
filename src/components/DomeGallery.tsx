@@ -829,8 +829,8 @@ export default function DomeGallery({
 
     // Apply image styling based on device
     const imgStyles = isMobile
-      ? `max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; filter:${grayscale ? "grayscale(1)" : "none"}; border-radius:${openedImageBorderRadius}; transition:transform 0.3s ease; will-change:transform;`
-      : `max-width:100%; height:100%; width:auto; height:auto; object-fit:contain; filter:${grayscale ? "grayscale(1)" : "none"}; border-radius:${openedImageBorderRadius}; transition:transform 0.3s ease; will-change:transform;`
+      ? `width:100%; height:300px; object-fit:cover; filter:${grayscale ? "grayscale(1)" : "none"}; border-radius:${openedImageBorderRadius}; transition:transform 0.3s ease; will-change:transform;`
+      : `width:100%; height:100%; object-fit:cover; filter:${grayscale ? "grayscale(1)" : "none"}; border-radius:${openedImageBorderRadius}; transition:transform 0.3s ease; will-change:transform;`
 
     img.style.cssText = imgStyles
 
