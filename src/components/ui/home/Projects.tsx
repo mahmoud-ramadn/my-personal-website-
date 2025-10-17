@@ -97,7 +97,7 @@ export default function Projects() {
         <DomeGallery
           images={projectImages}
           segments={22}
-          minRadius={400}
+           minRadius={400}
           openedImageWidth="max-w-[700px]"
           openedImageHeight="max-h-[700px]"
           openedImageBorderRadius="30px"
