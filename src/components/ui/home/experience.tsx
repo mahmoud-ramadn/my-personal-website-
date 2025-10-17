@@ -2,6 +2,7 @@ import BounceCards from "@/components/BounceCards"
 import type { ExperienceData } from "@/components/BounceCards"
 
 import UITitle from "../ui-title"
+import GradientBlinds from "@/components/GradientBlinds"
 
 const experienceData: ExperienceData[] = [
   {
@@ -85,9 +86,9 @@ const transformStyles = [
 
 export default function Experience() {
   return (
-    <section className="container flex items-center justify-center flex-col py-16">
-      <UITitle title="My" href="Experience" />
-      <div className="flex items-center justify-center mt-8">
+    <section className="container flex items-center justify-center relative flex-col py-16">
+      <UITitle title="My" href="Experience" className=" z-1"  />
+      <div className="flex flex-wrap items-center justify-center  z-1">
         <BounceCards
           className="custom-bounceCards"
           experiences={experienceData}
@@ -101,8 +102,7 @@ export default function Experience() {
         />
       </div>
 
-      {/* Experience Legend */}
-      <div className="mt-12 max-w-4xl mx-auto text-center">
+      <div className="mt-12 max-w-4xl mx-auto text-center z-1">
         <p className="text-gray-400 text-sm mb-4">
           Hover over the cards to explore my professional journey and technical expertise
         </p>
@@ -114,6 +114,23 @@ export default function Experience() {
             </div>
           ))}
         </div>
+      </div>
+           <div className=" md:hidden  block absolute left-1/2 -translate-x-1/2    w-full h-full pointer-events-none z-0 rounded-full   overflow-hidden ">
+        <GradientBlinds
+          gradientColors={['#FF9FFC', '#5227FF']}
+          angle={0}
+          noise={0.1}
+          blindCount={24}
+          blindMinWidth={20}
+          spotlightRadius={0.5}
+          spotlightSoftness={1}
+          spotlightOpacity={1}
+          mouseDampening={1}
+          distortAmount={50}
+          shineDirection="left"
+           mixBlendMode="lighten"
+          
+        />
       </div>
     </section>
   )

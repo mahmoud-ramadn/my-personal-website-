@@ -3,11 +3,13 @@ import { Sparkles } from "lucide-react"
 type Props = {
   title: string
   href?: string
-}
+  className ?: string
+  }
 
-export default function UITitle({ title, href }: Props) {
+
+export default function UITitle({ title, href,className }: Props) {
   return (
-    <div className="text-center mb-8 md:mb-12 lg:mb-20 relative px-2 sm:px-4">
+    <div className={`text-center mb-8 md:mb-12 lg:mb-20 relative px-2 sm:px-4 ${className}`}>
       <div className="relative">
         <div className="flex items-center justify-center gap-1 sm:gap-2 md:gap-4 mb-3 sm:mb-4 md:mb-6">
           <div className="h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent flex-1 max-w-8 sm:max-w-10 md:max-w-20"></div>
