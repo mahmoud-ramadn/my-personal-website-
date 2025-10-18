@@ -5,7 +5,7 @@ import TextType from "@/components/TextType"
 
 export default function MainHero() {
   return (
-    <div className="  relative  md:pt-40">
+    <div className="  relative    py-40   ">
       <div className=" container mx-auto w-full flex md:flex-row flex-col items-center gap-10  justify-around">
         <Hero className=" md:basis-1/2   basis-1 flex items-center  " />
         <TextType

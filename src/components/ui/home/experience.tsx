@@ -86,7 +86,7 @@ const transformStyles = [
 
 export default function Experience() {
   return (
-    <section className="container flex items-center justify-center relative flex-col py-16">
+    <section className="container flex items-center justify-center relative flex-col ">
       <UITitle title="My" href="Experience" className=" z-1"  />
       <div className="flex flex-wrap items-center justify-center  z-1">
         <BounceCards

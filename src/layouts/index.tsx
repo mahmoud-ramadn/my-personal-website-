@@ -29,8 +29,8 @@ export default function DefaultLayout() {
         <GradientBlinds
           gradientColors={['#FF9FFC', '#5227FF']}
           angle={0}
-          noise={0.8}
-          blindCount={24}
+          noise={0.2}
+          blindCount={14}
           blindMinWidth={200}
           spotlightRadius={0.5}
           spotlightSoftness={1}

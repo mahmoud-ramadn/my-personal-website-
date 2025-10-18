@@ -91,9 +91,9 @@ const projectImages = [
 
 export default function Projects() {
   return (
-    <div className=" md:my-20  my-10  md:p-0">
+    <div className="md:p-0">
       <UITitle title="My" href="Projects" />
-      <div className="  flex  justify-center  lg:h-[90vh] md:h-[700px] h-[70vh]  rounded-full overflow-hidden ">
+      <div className="  flex  justify-center h-[70vh] rounded-full overflow-hidden ">
         <DomeGallery
           images={projectImages}
           segments={22}
@@ -108,3 +108,4 @@ export default function Projects() {
     </div>
   )
 }
+  
