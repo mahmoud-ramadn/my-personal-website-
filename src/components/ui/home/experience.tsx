@@ -115,7 +115,7 @@ export default function Experience() {
           ))}
         </div>
       </div>
-           <div className=" md:hidden  block absolute left-1/2 -translate-x-1/2    w-full h-full pointer-events-none z-0 rounded-full   overflow-hidden ">
+           <div className=" md:hidden  block absolute left-1/2 -translate-x-1/2  w-full h-full pointer-events-none z-0 rounded-full   overflow-hidden ">
         <GradientBlinds
           gradientColors={['#FF9FFC', '#5227FF']}
           angle={0}

@@ -93,11 +93,12 @@ export default function Projects() {
   return (
     <div className="md:p-0">
       <UITitle title="My" href="Projects" />
-      <div className="  flex  justify-center h-[70vh] rounded-full overflow-hidden ">
+      <div className="  flex  justify-center lg:h-[1000px]  md:h-[800px]  h-[600px]   rounded-full  ">
         <DomeGallery
           images={projectImages}
           segments={22}
            minRadius={400}
+
           openedImageWidth="max-w-[700px]"
           openedImageHeight="max-h-[700px]"
           openedImageBorderRadius="30px"

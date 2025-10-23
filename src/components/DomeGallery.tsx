@@ -334,7 +334,7 @@ export default function DomeGallery({
   segments = DEFAULTS.segments,
   dragDampening = 2,
   openedImageWidth = "400px",
-  openedImageHeight = "",
+  openedImageHeight = "700px",
   imageBorderRadius = "30px",
   openedImageBorderRadius = "30px",
   grayscale = true,
@@ -1019,7 +1019,7 @@ export default function DomeGallery({
       <style dangerouslySetInnerHTML={{ __html: cssStyles }} />
       <div
         ref={rootRef}
-        className="sphere-root relative w-full h-full"
+        className="sphere-root relative w-full h-full rounded-full"
         style={
           {
             ["--segments-x" as any]: segments,
@@ -1033,7 +1033,7 @@ export default function DomeGallery({
       >
         <main
           ref={mainRef}
-          className="absolute inset-0 grid place-items-center overflow-hidden select-none bg-transparent"
+          className="absolute inset-0 grid place-items-center  overflow-hidden rounded-full select-none bg-transparent"
           style={{
             touchAction: "none",
             WebkitUserSelect: "none",
