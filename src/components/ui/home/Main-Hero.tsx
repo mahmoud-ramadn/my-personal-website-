@@ -8,7 +8,7 @@ export default function MainHero() {
     <div className="  relative    md:pt-40   ">
       <div className=" container mx-auto w-full flex md:flex-row flex-col items-center gap-10  md:justify-around  justify-start">
         <Hero className=" md:basis-1/2   flex items-center  " />
-        <div  className="  md:h-auto  h-[180px]  ">
+        <div  className="  md:basis-1/2    md:h-auto  h-[180px]  ">
           <TextType
             text={[
               "Hi, I'm Mahmoud Ramadan",
