@@ -1,8 +1,8 @@
 import BounceCards from "@/components/BounceCards"
 import type { ExperienceData } from "@/components/BounceCards"
+import GradientBlinds from "@/components/GradientBlinds"
 
 import UITitle from "../ui-title"
-import GradientBlinds from "@/components/GradientBlinds"
 
 const experienceData: ExperienceData[] = [
   {
@@ -86,8 +86,8 @@ const transformStyles = [
 
 export default function Experience() {
   return (
-    <section className="container flex items-center justify-center relative flex-col ">
-      <UITitle title="My" href="Experience" className=" z-1"  />
+    <section className="container md:my-40   flex items-center justify-center relative flex-col ">
+      <UITitle title="My" href="Experience" className=" z-1" />
       <div className="flex flex-wrap items-center justify-center  z-1">
         <BounceCards
           className="custom-bounceCards"
@@ -115,9 +115,9 @@ export default function Experience() {
           ))}
         </div>
       </div>
-           <div className=" md:hidden  block absolute left-1/2 -translate-x-1/2  w-full h-full pointer-events-none z-0 rounded-full   overflow-hidden ">
+      <div className=" md:hidden  block absolute left-1/2 -translate-x-1/2  w-full h-full pointer-events-none z-0 rounded-full   overflow-hidden ">
         <GradientBlinds
-          gradientColors={['#FF9FFC', '#5227FF']}
+          gradientColors={["#FF9FFC", "#5227FF"]}
           angle={0}
           noise={0.1}
           blindCount={24}
@@ -128,8 +128,7 @@ export default function Experience() {
           mouseDampening={1}
           distortAmount={50}
           shineDirection="left"
-           mixBlendMode="lighten"
-          
+          mixBlendMode="lighten"
         />
       </div>
     </section>

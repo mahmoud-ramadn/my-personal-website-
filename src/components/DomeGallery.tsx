@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useGesture } from "@use-gesture/react"
+import { useGesture } from "@use-gesture/react";
 
-import { useCallback, useEffect, useMemo, useRef } from "react"
+
+
+import { useCallback, useEffect, useMemo, useRef } from "react";
+
+
+
+
 
 type ImageItem = string | { src: string; alt?: string; website: string; sourceCode: string }
 
@@ -1007,11 +1013,14 @@ export default function DomeGallery({
         height: 75vh !important;
         left: 8.5vw !important;
         top: -1.5vh !important;
-        background: transparent !important;
-        backdrop-filter: none !important;
-        box-shadow: none !important;
       }
     }
+
+.enlarge img {
+      object-fit: contain !important;
+    }
+
+
   `
 
   return (

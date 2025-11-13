@@ -1,4 +1,7 @@
 import alsmasy from "@/assets/images/project/almasy.webp"
+import chat2 from "@/assets/images/project/chat1 (1).png"
+import chat from "@/assets/images/project/chat1 (1).png"
+import chat1 from "@/assets/images/project/chat1 (2).png"
 import damain from "@/assets/images/project/daman.webp"
 import Dashbord from "@/assets/images/project/dashbord.webp"
 import Diatatan from "@/assets/images/project/diataftan.webp"
@@ -87,18 +90,35 @@ const projectImages = [
     website: "https://offern.sa/",
     sourceCode: "https://github.com/mahmoud-ramadn",
   },
+  {
+    src: chat,
+    alt: "Dashboard Analytics",
+    website: "https://streamify-video-calls-production.up.railway.app/",
+    sourceCode: "https://github.com/mahmoud-ramadn/Streamify-video-calls",
+  },
+  {
+    src: chat1,
+    alt: "Dashboard Analytics",
+    website: "https://streamify-video-calls-production.up.railway.app/",
+    sourceCode: "https://github.com/mahmoud-ramadn/Streamify-video-calls",
+  },
+  {
+    src: chat2,
+    alt: "Dashboard Analytics",
+    website: "https://streamify-video-calls-production.up.railway.app/",
+    sourceCode: "https://github.com/mahmoud-ramadn/Streamify-video-calls",
+  },
 ]
 
 export default function Projects() {
   return (
-    <div className="md:p-0">
+    <div className="md:p-0 md:my-40 ">
       <UITitle title="My" href="Projects" />
       <div className="  flex  justify-center lg:h-[1000px]  md:h-[800px]  h-[600px]   rounded-full  ">
         <DomeGallery
           images={projectImages}
           segments={22}
-           minRadius={400}
-
+          minRadius={400}
           openedImageWidth="max-w-[700px]"
           openedImageHeight="max-h-[700px]"
           openedImageBorderRadius="30px"
@@ -109,4 +129,3 @@ export default function Projects() {
     </div>
   )
 }
-  
